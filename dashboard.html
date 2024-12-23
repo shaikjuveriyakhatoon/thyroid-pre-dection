@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thyroid Prediction Dashboard</title>
+    <style>
+        /* General Styling */
+        body {
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        /* Navigation Bar Styling */
+        nav {
+            background-color: #333;
+            padding: 20px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styling */
+        main {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Card Styling */
+        .card {
+            background-color: white;
+            width: 300px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card h2, .card2 h2, .card3 h2 {
+            color: #333;
+        }
+
+        .card2 {
+            background-color: white;
+            width: 500px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Alerts Styling */
+        .alert {
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            color: black;
+        }
+
+        .alert-orange {
+            background-color: orange;
+        }
+
+        .alert-skyblue {
+            background-color: skyblue;
+        }
+
+        .alert-pink {
+            background-color: pink;
+        }
+
+        .card3 {
+            width: 80%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li>
+                <h1><a href="#">Thyroid Prediction Dashboard</a></h1>
+            </li>
+            <li>
+                <p><a href="#">Monitor and predict thyroid health</a></p>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Thyroid Data Card -->
+        <div class="card" id="thyroidData">
+            <h2>Live Thyroid Data</h2>
+            <p><b>TSH Level:</b> <span id="tsh">2.5</span> µIU/mL</p>
+            <p><b>T3 Level:</b> <span id="t3">2.8</span> pg/mL</p>
+            <p><b>T4 Level:</b> <span id="t4">8.5</span> µg/dL</p>
+            <p><b>Free T3 Level:</b> <span id="freeT3">3.2</span> pg/mL</p>
+            <p><b>Free T4 Level:</b> <span id="freeT4">1.2</span> ng/dL</p>
+            <p><b>Thyroid Antibodies:</b> <span id="antibodies">0.1</span> IU/mL</p>
+        </div>
+
+        <!-- Alerts Card -->
+        <div class="card2" id="detection">
+            <h2>Alerts</h2>
+            <p class="alert alert-orange" id="alertTsh">High TSH Level Detected!</p>
+            <p class="alert alert-skyblue" id="alertT3">Low T3 Level Detected</p>
+            <p class="alert alert-pink" id="alertT4">High T4 Level Detected</p>
+        </div>
+
+        <!-- Live Graph Placeholder -->
+        <div class="card3" id="liveGraph">
+            <h2>Live Graph</h2>
+            <p>Graph content will be displayed here...</p>
+        </div>
+    </main>
+
+    <!-- JavaScript for Live Updates -->
+    <script>
+        /**
+         * Updates the value of an element by ID with random values
+         * @param {string} elementId - ID of the element to update
+         * @param {number} baseValue - Base value for randomization
+         * @param {number} randomRange - Range for randomization
+         */
+        function updateValue(elementId, baseValue, randomRange) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = (Math.random() * randomRange + baseValue).toFixed(1);
+            }
+        }
+
+        // Function to trigger thyroid alerts based on thresholds
+        function triggerThyroidAlerts() {
+            const tsh = parseFloat(document.getElementById("tsh").textContent);
+            const t3 = parseFloat(document.getElementById("t3").textContent);
+            const t4 = parseFloat(document.getElementById("t4").textContent);
+
+            const alertTsh = document.getElementById("alertTsh");
+            const alertT3 = document.getElementById("alertT3");
+            const alertT4 = document.getElementById("alertT4");
+
+            // TSH Threshold: Elevated levels (above 4.0 µIU/mL) could indicate hypothyroidism
+            if (tsh > 4.0) {
+                alertTsh.style.display = "block";
+            } else {
+                alertTsh.style.display = "none";
+            }
+
+            // T3 Threshold: Low T3 (below 2.0 pg/mL) could indicate hypothyroidism
+            if (t3 < 2.0) {
+                alertT3.style.display = "block";
+            } else {
+                alertT3.style.display = "none";
+            }
+
+            // T4 Threshold: Elevated T4 (above 10 µg/dL) could indicate hyperthyroidism
+            if (t4 > 10) {
+                alertT4.style.display = "block";
+            } else {
+                alertT4.style.display = "none";
+            }
+        }
+
+        // Set intervals to update thyroid data and check alerts
+        setInterval(() => {
+            updateValue("tsh", 2.5, 2);  // Simulating TSH levels between 2.5 and 4.5
+            updateValue("t3", 2.8, 2);   // Simulating T3 levels between 2.8 and 4.8
+            updateValue("t4", 8.5, 2);   // Simulating T4 levels between 8.5 and 10.5
+            updateValue("freeT3", 3.2, 1);  // Simulating Free T3
+            updateValue("freeT4", 1.2, 0.5);  // Simulating Free T4
+            updateValue("antibodies", 0.1, 0.2);  // Simulating Thyroid Antibodies
+
+            // Trigger alerts based on updated data
+            triggerThyroidAlerts();
+        }, 2000);  // Updates every 2 seconds
+    </script>
+</body>
+</html>
